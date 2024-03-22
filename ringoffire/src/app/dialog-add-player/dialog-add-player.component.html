@@ -1,11 +1,17 @@
-<ol>
-    <li>
-      <mat-form-field>
-        <mat-label>What's your name?</mat-label>
-        <input matInput >
-      </mat-form-field>
-    </li>
-    <li>
-      <button mat-raised-button >Pick one</button>
-    </li>
-  </ol>
+<h1 mat-dialog-title>Add new player</h1>
+<div id="dialog" mat-dialog-content>
+    <p>Please enter the name of a player</p>
+    <form [formGroup]="addPlayerForm" (ngSubmit)="onSubmit()">
+        <mat-form-field>
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="name" name="name" required>
+            <mat-error *ngIf="addPlayerForm.get('name')?.hasError('required')">
+                Name is <strong>required</strong>
+            </mat-error>
+        </mat-form-field>
+        <div mat-dialog-actions>
+            <button mat-button (click)="onNoClick()" >No Thanks</button>
+            <button type="submit" mat-button [disabled]="!addPlayerForm.valid"  >Ok</button>
+        </div>
+    </form>
+</div>

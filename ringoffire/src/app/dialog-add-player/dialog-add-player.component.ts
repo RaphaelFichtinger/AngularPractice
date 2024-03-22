@@ -1,35 +1,68 @@
-import { Component } from '@angular/core';
+
+import { CommonModule } from '@angular/common';
+import { Component, Inject } from '@angular/core';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
 import {
-  MatDialog,
+  MatDialogTitle,
   MAT_DIALOG_DATA,
   MatDialogRef,
-  MatDialogTitle,
   MatDialogContent,
   MatDialogActions,
-  MatDialogClose,
+  MatDialogClose
 } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
-import {MatButtonModule} from '@angular/material/button';
-import {FormsModule} from '@angular/forms';
-import {MatInputModule} from '@angular/material/input';
-import {MatFormFieldModule} from '@angular/material/form-field';
 
 @Component({
   selector: 'app-dialog-add-player',
   standalone: true,
   imports: [
-    MatFormFieldModule,
-    MatInputModule,
-    FormsModule,
-    MatButtonModule,
+    CommonModule,
     MatDialogTitle,
     MatDialogContent,
     MatDialogActions,
     MatDialogClose,
+    MatFormFieldModule,
+    FormsModule,
+    MatInputModule,
+    MatButtonModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   templateUrl: './dialog-add-player.component.html',
   styleUrl: './dialog-add-player.component.scss'
 })
 export class DialogAddPlayerComponent {
+  name!: string;
+
+  addPlayerForm = new FormGroup({
+    name: new FormControl("", [Validators.pattern('[a-zA-Z ]+'), Validators.required, Validators.minLength(3)]),
+  });
+
+
+  constructor(
+    private dialogRef: MatDialogRef<DialogAddPlayerComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: string
+  ) { };
+
+
+  onSubmit(): void {
+    if (this.addPlayerForm.valid) {
+      let value = this.addPlayerForm.get("name")?.value
+      if (value && value.length !== 0) {
+        this.name = value
+        this.dialogRef.close(this.name)
+      }
+    }
+  };
+
+
+  onNoClick(): void {
+    this.name="";
+    this.dialogRef.close();
+  }
+
 
 }
