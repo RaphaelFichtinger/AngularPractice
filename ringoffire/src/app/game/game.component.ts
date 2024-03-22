@@ -11,10 +11,11 @@ import {MatDialogModule} from '@angular/material/dialog';
 
 
 
+
 @Component({
   selector: 'app-game',
   standalone: true,
-  imports: [CommonModule, PlayerComponent, MatButtonModule, MatIconModule, MatDialogModule],
+  imports: [CommonModule, PlayerComponent, MatButtonModule, MatIconModule, MatDialogModule, ],
   templateUrl: './game.component.html',
   styleUrl: './game.component.scss'
 })
