@@ -11,13 +11,16 @@ import { Game } from '../../models/game';
   styleUrl: './game.component.scss'
 })
 export class GameComponent {
-pickCardAnimation = false;
-game: Game | undefined;
+  pickCardAnimation = false;
+  currentCard: string | undefined;
+  game: Game = new Game;
+
 
 constructor() { }
 
 ngOnInit(): void {
   this.newGame();
+  
 }
 
 
@@ -28,7 +31,9 @@ newGame(){
 
 
 takeCard(){
- this.pickCardAnimation = true;
+  this.currentCard = this.game.stack.pop();
+  console.log(this.currentCard);
+  this.pickCardAnimation = true;
 
 }
 
