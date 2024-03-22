@@ -30,15 +30,24 @@ newGame(){
 }
 
 
-takeCard(){
-  if(!this.pickCardAnimation){
-  this.currentCard = this.game.stack.pop();
-  console.log(this.currentCard);
-  this.pickCardAnimation = true;
 
-  setTimeout(()=>{
-    this.pickCardAnimation = false;
-  },1500)
+takeCard() {
+  if (!this.pickCardAnimation) {
+    const card = this.game.stack.pop();
+    if (card !== undefined) {
+      this.currentCard = card;
+      this.pickCardAnimation = true;
+    console.log('game.stack is ', this.game.stack);
+    console.log('game.playedCards is ', this.game.playedCards);
+
+
+      setTimeout(() => {
+        if (card !== undefined) {
+          this.currentCard = card;
+        this.game.playedCards.push(this.currentCard);
+        }
+        this.pickCardAnimation = false;
+      }, 1000);
 }
 }
 
@@ -47,4 +56,5 @@ takeCard(){
 
 
 
+}
 }
