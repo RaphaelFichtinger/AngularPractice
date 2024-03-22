@@ -10,5 +10,19 @@ import { CommonModule } from '@angular/common';
   styleUrl: './game.component.scss'
 })
 export class GameComponent {
+pickCardAnimation = false;
+
+constructor() { }
+
+takeCard(){
+ this.pickCardAnimation = true;
+
+
+}
+
+
+
+
+
 
 }
