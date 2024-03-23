@@ -44,7 +44,6 @@ export class DialogAddPlayerComponent {
 
   constructor(
     private dialogRef: MatDialogRef<DialogAddPlayerComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: string
   ) { };
 
 

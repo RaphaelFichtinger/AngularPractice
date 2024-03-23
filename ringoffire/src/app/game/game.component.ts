@@ -48,8 +48,9 @@ takeCard() {
       this.pickCardAnimation = true;
     console.log('game.stack is ', this.game.stack);
     console.log('game.playedCards is ', this.game.playedCards);
-
-      this.game.currentPlayer = this.game.currentPlayer ++;
+      
+      this.game.currentPlayer++;
+      this.game.currentPlayer = this.game.currentPlayer % this.game.players.length;
       setTimeout(() => {
         if (card !== undefined) {
           this.currentCard = card;
@@ -64,8 +65,9 @@ openDialog(): void {
   const dialogRef = this.dialog.open(DialogAddPlayerComponent,);
 
   dialogRef.afterClosed().subscribe(name => {
+    if(name && name.length > 0){
     this.game.players.push(name);
-    console.log('The dialog was closed', name);
+    console.log('The dialog was closed', name);}
   });
 }
 }
