@@ -21,7 +21,7 @@ import { GameInfoComponent } from '../game-info/game-info.component';
 })
 export class GameComponent {
   pickCardAnimation = false;
-  currentCard: string | undefined;
+  currentCard: string = "";
   game: Game = new Game;
 
 
@@ -49,7 +49,7 @@ takeCard() {
     console.log('game.stack is ', this.game.stack);
     console.log('game.playedCards is ', this.game.playedCards);
 
-
+      this.game.currentPlayer = this.game.currentPlayer ++;
       setTimeout(() => {
         if (card !== undefined) {
           this.currentCard = card;
