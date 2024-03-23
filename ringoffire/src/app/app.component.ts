@@ -6,6 +6,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
+import {MatCard} from '@angular/material/card';
+
 
 
 
@@ -21,7 +23,8 @@ import { FormsModule } from '@angular/forms';
     MatIconModule, 
     MatDialogModule, 
     MatInputModule,
-    FormsModule
+    FormsModule,
+    MatCard,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
