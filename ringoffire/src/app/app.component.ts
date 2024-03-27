@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
@@ -7,7 +7,6 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import {MatCard} from '@angular/material/card';
-
 
 
 
@@ -31,4 +30,7 @@ import {MatCard} from '@angular/material/card';
 })
 export class AppComponent {
   title = 'ringoffire';
+
+  constructor() {
+  }
 }

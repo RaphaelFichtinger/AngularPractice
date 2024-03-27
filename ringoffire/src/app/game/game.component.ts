@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Inject, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Game } from '../../models/game';
 import { PlayerComponent } from '../player/player.component';
@@ -7,29 +7,33 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatDialog} from '@angular/material/dialog';
 import { DialogAddPlayerComponent } from '../dialog-add-player/dialog-add-player.component';
 import { GameInfoComponent } from '../game-info/game-info.component';
-
-
+import { AppComponent } from '../app.component';
+import { Firestore, addDoc, collection, collectionData, doc, onSnapshot, } from '@angular/fire/firestore';
+import { FirebaseServiceService } from '../Services/firebase-service.service';
 
 
 
 @Component({
   selector: 'app-game',
   standalone: true,
-  imports: [CommonModule, PlayerComponent, MatButtonModule, MatIconModule, GameInfoComponent ],
+  imports: [CommonModule, PlayerComponent, MatButtonModule, MatIconModule, GameInfoComponent,AppComponent,  ],
   templateUrl: './game.component.html',
   styleUrl: './game.component.scss'
 })
 export class GameComponent {
   pickCardAnimation = false;
   currentCard: string = "";
-  game: Game = new Game;
+  game!: Game;
+  games: Array<object> = [];
 
 
-constructor(public dialog: MatDialog) { }
+constructor(firestore: FirebaseServiceService, public dialog: MatDialog) { 
+}
 
 ngOnInit(): void {
   this.newGame();
-  
+  this.firestore.collection('items').valueChanges().subscribe((game) =>{
+  console.log();})
 }
 
 
