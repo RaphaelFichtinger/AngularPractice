@@ -1,4 +1,4 @@
-import { Component, Inject, inject } from '@angular/core';
+import { Component, } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Game } from '../../models/game';
 import { PlayerComponent } from '../player/player.component';
@@ -8,8 +8,7 @@ import {MatDialog} from '@angular/material/dialog';
 import { DialogAddPlayerComponent } from '../dialog-add-player/dialog-add-player.component';
 import { GameInfoComponent } from '../game-info/game-info.component';
 import { AppComponent } from '../app.component';
-import { Firestore, addDoc, collection, collectionData, doc, onSnapshot, } from '@angular/fire/firestore';
-import { FirebaseServiceService } from '../Services/firebase-service.service';
+import { Firestore, collection } from '@angular/fire/firestore';
 
 
 
@@ -27,7 +26,7 @@ export class GameComponent {
   games: Array<object> = [];
 
 
-constructor(firestore: FirebaseServiceService, public dialog: MatDialog) { 
+constructor( private firestore: Firestore, public dialog: MatDialog) { 
 }
 
 ngOnInit(): void {
