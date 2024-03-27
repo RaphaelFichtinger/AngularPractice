@@ -1,4 +1,4 @@
-import { Component, } from '@angular/core';
+import { Component, Inject, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Game } from '../../models/game';
 import { PlayerComponent } from '../player/player.component';
@@ -8,7 +8,9 @@ import {MatDialog} from '@angular/material/dialog';
 import { DialogAddPlayerComponent } from '../dialog-add-player/dialog-add-player.component';
 import { GameInfoComponent } from '../game-info/game-info.component';
 import { AppComponent } from '../app.component';
-import { Firestore, collection } from '@angular/fire/firestore';
+import { Injectable } from '@angular/core';
+import { Firestore, collection, doc, collectionData } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
 
 
 
@@ -23,17 +25,36 @@ export class GameComponent {
   pickCardAnimation = false;
   currentCard: string = "";
   game!: Game;
-  games: Array<object> = [];
+
+  firestore: Firestore = inject(Firestore);
+
+  items$;
+  items;
+
+  constructor(public dialog: MatDialog) { 
+    this.items$ = collectionData(this.getGameRef());
+    this.items = this.items$.subscribe((game) => {
+      console.log('game update', game);
+    });
+  }
+  
+  
+
+  getGameRef(){
+    return collection(this.firestore, 'games');
+  }
+
+  getSingleDocRef(colId:string, docId:string){
+    return doc(collection(this.firestore, colId), docId);
+  }
 
 
-constructor( private firestore: Firestore, public dialog: MatDialog) { 
-}
 
 ngOnInit(): void {
   this.newGame();
-  this.firestore.collection('items').valueChanges().subscribe((game) =>{
-  console.log();})
 }
+
+
 
 
 newGame(){
