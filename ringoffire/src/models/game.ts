@@ -1,6 +1,9 @@
 
 
 export class Game {
+    id(id: any, arg1: { game: { players: string[]; stack: string[]; playedCards: string[]; currentPLayer: number; }; data: { Es: string; }; }) {
+      throw new Error('Method not implemented.');
+    }
     public players: string[] = [];
     public stack: string[] = [];
     public playedCards: string[] = [];
@@ -39,11 +42,9 @@ export class Game {
   
     while (currentIndex > 0) {
   
-      // Pick a remaining element.
       randomIndex = Math.floor(Math.random() * currentIndex);
       currentIndex--;
   
-      // And swap it with the current element.
       [array[currentIndex], array[randomIndex]] = [
         array[randomIndex], array[currentIndex]];
     }

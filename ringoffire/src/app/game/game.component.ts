@@ -34,6 +34,7 @@ export class GameComponent {
    Data = {
     Es: "Klappt perfekt  !",  
   }
+  DataID:string = "";
 
   constructor(private route: ActivatedRoute, public dialog: MatDialog) { 
     this.items$ = collectionData(this.getGameRef());
@@ -69,9 +70,12 @@ async subGame(id: string){
       this.game.players = game['players'];
       this.game.stack = game['stack'];
          console.log(game, doc.id);
-
     }
   });
+}
+
+async updateGame(id: string, game: Game) {
+  await setDoc(doc(this.getGameRef(), id), game.toJson());
 }
 
 
@@ -79,8 +83,8 @@ ngOnInit(): void {
   this.newGame();
   this.route.params.subscribe((params) => {
   console.log(params['id']);
-  this.addNew();
   console.log(this.game)
+  this.DataID = params['id'];
 })
  
 
@@ -109,7 +113,10 @@ takeCard() {
         if (card !== undefined) {
           this.currentCard = card;
         this.game.playedCards.push(this.currentCard);
+        
         }
+        this.updateGame(this.DataID, this.game);
+        
         this.pickCardAnimation = false;
       }, 1000);
 }
