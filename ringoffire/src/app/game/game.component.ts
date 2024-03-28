@@ -9,8 +9,9 @@ import { DialogAddPlayerComponent } from '../dialog-add-player/dialog-add-player
 import { GameInfoComponent } from '../game-info/game-info.component';
 import { AppComponent } from '../app.component';
 import { Injectable } from '@angular/core';
-import { Firestore, collection, doc, collectionData } from '@angular/fire/firestore';
+import { Firestore, collection, doc, collectionData, setDoc, addDoc} from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 
 
@@ -30,15 +31,18 @@ export class GameComponent {
 
   items$;
   items;
+   Data = {
+    Es: "Klappt perfekt  !",  
+  }
 
-  constructor(public dialog: MatDialog) { 
+  constructor(private route: ActivatedRoute, public dialog: MatDialog) { 
     this.items$ = collectionData(this.getGameRef());
-    this.items = this.items$.subscribe((game) => {
+    this.items = this.items$.subscribe((game:any) => {
       console.log('game update', game);
     });
   }
-  
-  
+
+
 
   getGameRef(){
     return collection(this.firestore, 'games');
@@ -50,16 +54,35 @@ export class GameComponent {
 
 
 
+  async addNew(){
+    await addDoc(collection(this.firestore, "games"), {
+      game: this.game.toJson()
+    });
+  }
+
+
 ngOnInit(): void {
   this.newGame();
+  this.route.params.subscribe((params) => {
+  console.log(params['id']);
+  this.addNew();
+  
+  this.game.currentPlayer = game.currentPLayer,
+  this.game.playedCards = game.playedCards,
+  this.game.players = game.players,
+  this.game.stack = game.stack,
+
+
+})
+ 
+
 }
 
 
 
-
 newGame(){
-  this.game = new Game();
-  console.log(this.game);
+  this.game = new Game();  
+  this.addNew();
 }
 
 
