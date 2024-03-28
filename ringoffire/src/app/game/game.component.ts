@@ -106,9 +106,9 @@ takeCard() {
       this.currentCard = card;
       this.pickCardAnimation = true;
     console.log('game.playedCards is ', this.game.playedCards);
-      
       this.game.currentPlayer++;
       this.game.currentPlayer = this.game.currentPlayer % this.game.players.length;
+      
       setTimeout(() => {
         if (card !== undefined) {
           this.currentCard = card;
@@ -128,6 +128,8 @@ openDialog(): void {
   dialogRef.afterClosed().subscribe(name => {
     if(name && name.length > 0){
     this.game.players.push(name);
+    this.updateGame(this.DataID, this.game);
+
     console.log('The dialog was closed', name);}
   });
 }
