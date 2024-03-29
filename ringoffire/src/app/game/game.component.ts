@@ -9,7 +9,7 @@ import { DialogAddPlayerComponent } from '../dialog-add-player/dialog-add-player
 import { GameInfoComponent } from '../game-info/game-info.component';
 import { AppComponent } from '../app.component';
 import { Injectable } from '@angular/core';
-import { Firestore, collection, doc, collectionData, setDoc, addDoc, onSnapshot} from '@angular/fire/firestore';
+import { Firestore, collection, doc, collectionData, setDoc, getDoc, addDoc, onSnapshot} from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 
@@ -79,12 +79,17 @@ async updateGame(id: string, game: Game) {
 }
 
 
+
+
 ngOnInit(): void {
   this.newGame();
   this.route.params.subscribe((params) => {
   console.log(params['id']);
   console.log(this.game)
   this.DataID = params['id'];
+    
+ 
+
 })
  
 
