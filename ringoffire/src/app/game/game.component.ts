@@ -26,20 +26,10 @@ export class GameComponent {
   pickCardAnimation = false;
   currentCard: string = "";
   game!: Game;
-
   firestore: Firestore = inject(Firestore);
-
-  items$;
-  items;
-   Data = {
-    Es: "Klappt perfekt  !",  
-  }
   DataID:string = "";
 
   constructor(private route: ActivatedRoute, public dialog: MatDialog) { 
-    this.items$ = collectionData(this.getGameRef());
-    this.items = this.items$.subscribe((game:any) => {
-    });
   }
 
 
@@ -69,7 +59,7 @@ async subGame(id: string){
       this.game.playedCards = game['playedCards'];
       this.game.players = game['players'];
       this.game.stack = game['stack'];
-         console.log(game, doc.id);
+         console.log('testtesttest',game, doc.id);
     }
   });
 }
@@ -84,15 +74,22 @@ async updateGame(id: string, game: Game) {
 ngOnInit(): void {
   this.newGame();
   this.route.params.subscribe((params) => {
-  console.log(params['id']);
-  console.log(this.game)
-  this.DataID = params['id'];
-    
- 
+    console.log(params['id']);
+    console.log(this.game);
+    this.DataID = params['id'];
 
-})
- 
+    const gameDocRef = doc(this.firestore, "games", this.DataID);
 
+    const unsub = onSnapshot(gameDocRef, (doc) => {
+      if (doc.exists()) {
+        const gameData = doc.data();
+        this.game.currentPlayer = gameData['currentPlayer'];
+        this.game.playedCards = gameData['playedCards'];
+        this.game.players = gameData['players'];
+        this.game.stack = gameData['stack'];
+      }
+    });
+  });
 }
 
 
