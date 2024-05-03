@@ -1,7 +1,7 @@
 
 
 export class Game {
-    id(id: any, arg1: { game: { players: string[]; stack: string[]; playedCards: string[]; currentPLayer: number; }; data: { Es: string; }; }) {
+    id(id: any, arg1: { game: { players: string[]; stack: string[]; playedCards: string[]; currentPlayer: number; }; data: { Es: string; }; }) {
       throw new Error('Method not implemented.');
     }
     public players: string[] = [];
@@ -27,7 +27,7 @@ export class Game {
         players: this.players,
         stack: this.stack,
         playedCards: this.playedCards,
-        currentPLayer: this.currentPlayer
+        currentPlayer: this.currentPlayer
       };
     }
   
