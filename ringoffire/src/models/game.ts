@@ -1,6 +1,7 @@
 
 
 export class Game {
+    [x: string]: any;
     id(id: any, arg1: { game: { players: string[]; stack: string[]; playedCards: string[]; currentPlayer: number; }; data: { Es: string; }; }) {
       throw new Error('Method not implemented.');
     }

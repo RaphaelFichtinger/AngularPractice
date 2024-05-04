@@ -3,6 +3,7 @@ import { Firestore, collection, doc, collectionData, setDoc, getDoc, addDoc, onS
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { GameComponent } from './game/game.component';
+import { Router } from '@angular/router'; // Router importieren
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class FireService {
 
   firestore: Firestore = inject(Firestore)
   
-  constructor(private route: ActivatedRoute) { 
+  constructor(private route: ActivatedRoute,private router: Router) { 
 
   }
   
@@ -23,6 +24,16 @@ export class FireService {
 
 
 
+  newGame(){
+    const newGameItem = {  };
+
+    this.addGame(newGameItem).then(() => {
+     
+      this.router.navigateByUrl('/game');
+    }).catch((error) => {
+      console.error('Fehler beim Hinzufügen des Spiels:', error);
+    });
+  }
 
 
 

@@ -63,7 +63,7 @@ newGame() {
       });
     }
   });
-  //this.addNewGame();
+ // this.addNewGame();
 }
 
 
