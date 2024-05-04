@@ -9,7 +9,7 @@ import { DialogAddPlayerComponent } from '../dialog-add-player/dialog-add-player
 import { GameInfoComponent } from '../game-info/game-info.component';
 import { AppComponent } from '../app.component';
 import { Injectable } from '@angular/core';
-import { Firestore, collection, doc, collectionData, setDoc, getDoc, addDoc, onSnapshot} from '@angular/fire/firestore';
+import { Firestore, collection, doc, collectionData, setDoc, getDoc, addDoc, onSnapshot, updateDoc} from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { FireService } from '../fire.service';
@@ -24,9 +24,9 @@ import { FireService } from '../fire.service';
   styleUrl: './game.component.scss'
 })
 export class GameComponent {
-  pickCardAnimation = false;
-  currentCard: string = "";
+
   game!: Game;
+  gameID?:string;
   firestore: Firestore = inject(Firestore);
   DataID:string = "";
   unsubList:any;
@@ -41,25 +41,37 @@ export class GameComponent {
 
 ngOnInit(): void {
   this.newGame();
- 
 }
+
+
+
+async saveGame(colId: string, docId: string, item: Game) {
+  await updateDoc(this.getSingleGameRef(colId, docId), item.toJson()) // update method
+    .catch((err) => {
+      console.log(err);
+    });
+}
+
+
+
 
 
 newGame() {
   this.game = new Game(); 
-
   this.route.params.subscribe((params) => {
-    console.log('got params', params);
-    const gameId = params['id'];
-
+    let gameId = params['id'];
+    this.gameID = gameId;
+    
+    
     if (gameId) {
       this.unsubList = onSnapshot(this.getSingleGameRef("games", gameId), (snapshot) => {
         const gameData:any = snapshot.data(); 
-        console.log(gameData);
         this.game.currentPlayer = gameData.currentPlayer,
         this.game.playedCards = gameData.playedCards,
         this.game.players = gameData.players,
-        this.game.stack = gameData.stack
+        this.game.stack = gameData.stack,
+        this.game.pickCardAnimation = gameData.pickCardAnimation,
+        this.game.currentCard = gameData.currentCard
       });
     }
   });
@@ -77,29 +89,32 @@ getSingleGameRef(colId: string, docId: any) {
 
 addNewGame(){
   this.fireService.addGame(this.game.toJson())
-  console.log('added new game');
 }
 
 
 
 takeCard() {
-  if (!this.pickCardAnimation) {
+  if (!this.game.pickCardAnimation) {
     const card = this.game.stack.pop();
+
     if (card !== undefined) {
-      this.currentCard = card;
-      this.pickCardAnimation = true;
-    console.log('game.playedCards is ', this.game.playedCards);
+      this.game.currentCard = card;
+      this.game.pickCardAnimation = true;
       this.game.currentPlayer++;
       this.game.currentPlayer = this.game.currentPlayer % this.game.players.length;
-      
+      if(this.gameID){
+        this.saveGame("games", this.gameID, this.game);
+        }
       setTimeout(() => {
         if (card !== undefined) {
-          this.currentCard = card;
-        this.game.playedCards.push(this.currentCard);
-        
+          this.game.currentCard = card;
+        this.game.playedCards.push(this.game.currentCard);
+
         }
-        
-        this.pickCardAnimation = false;
+        this.game.pickCardAnimation = false;
+        if(this.gameID){
+          this.saveGame("games", this.gameID, this.game);
+          }
       }, 1000);
 }
 }
@@ -110,8 +125,10 @@ openDialog(): void {
   dialogRef.afterClosed().subscribe(name => {
     if(name && name.length > 0){
     this.game.players.push(name);
-
-    console.log('The dialog was closed', name);}
+    if (this.gameID) {
+    this.saveGame("games", this.gameID, this.game);
+    }
+    }
   });
 }
 }
